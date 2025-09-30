@@ -22,7 +22,6 @@ int main() {
 	progress_bar_value->setPosition({ text->getGlobalBounds().size.x, 35 });
 
 	// Create Button
-	int i = 0;
 	sfui::Button* btn = new sfui::Button(new sfui::Text(font, "Press", 18), [&]() {
 		progress_bar_value->setString(std::to_string(static_cast<int>(progress_bar->getValue())));
 	});
