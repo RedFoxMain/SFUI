@@ -26,7 +26,6 @@ int main() {
 		progress_bar_value->setString(std::to_string(static_cast<int>(progress_bar->getValue())));
 	});
 	btn->setPositionY(70);
-
 	// Create Window
 	sfui::Window* wnd = new sfui::Window(new sfui::Text(font, "Test window", 16));
 	wnd->setPosition({ 200, 100 });

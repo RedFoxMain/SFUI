@@ -4,6 +4,9 @@
 #include "../core.hpp"
 
 namespace sfui {
+	namespace WindowStyle {
+		enum Style: uint8_t { DEFAULT = 1, RESIZABLE = 1 << 1 };
+	}
 	class Window: public Widget {
 	friend class Canvas;
 	public:
@@ -24,8 +27,10 @@ namespace sfui {
 		bool is_active_;
 		bool is_dragging_;
 
+		uint8_t m_style;
+
 	public:
-		Window(Text* title, sf::Vector2f size = { 300, 200 }, sf::Vector2f position = { 0 , 0 })
+		Window(Text* title, uint8_t style = WindowStyle::DEFAULT, sf::Vector2f size = { 300, 200 }, sf::Vector2f position = { 0 , 0 })
 			: is_active_(false), is_dragging_(false), m_is_hidden(false), is_closed_(false), m_title(title) {
 			m_rect.setPosition(position);
 			m_rect.setSize(size);
