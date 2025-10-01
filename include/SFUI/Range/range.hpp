@@ -12,6 +12,7 @@ namespace sfui {
 
 	private:
 		sf::Vector2f slider_base_offset_;
+		sf::Vector2f slider_moved_offset_;
 		sf::RectangleShape m_background;
 		float m_min;
 		float m_max;

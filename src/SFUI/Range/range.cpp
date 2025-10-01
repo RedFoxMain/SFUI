@@ -2,9 +2,12 @@
 
 void sfui::Range::processEvents(const sf::Event& event) {
 	slider->processEvents(event);
+	if (const auto* mouse_pressed = event.getIf<sf::Event::MouseButtonPressed>()) {
+		if (slider->isPressed()) slider_moved_offset_.x = mouse_pressed->position.x - slider->getPosition().x;
+	}
 	if (const auto* mouse_pos = event.getIf<sf::Event::MouseMoved>()) {
 		if (slider->isPressed()) {
-			float mouse_x = mouse_pos->position.x;
+			float mouse_x = mouse_pos->position.x - slider_moved_offset_.x;
 			float min_x = m_background.getPosition().x;
 			float max_x = m_background.getPosition().x + m_background.getSize().x - slider->getSize().x;
 			float new_x = std::clamp(mouse_x, min_x, max_x);
