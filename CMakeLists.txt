@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED ON)
 project("SFUI")
 
-set(BUILD_EXAMPLES TRUE)
+option(BUILD_EXAMPLE "Build example" OFF)
 set(EXECUTABLE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
@@ -35,7 +35,7 @@ set(
 	"src/SFUI/Text/text.cpp"
 )
 
-if(BUILD_EXAMPLES)
+if(BUILD_EXAMPLE STREQUAL "ON")
 	add_subdirectory("example")
 endif()
 
