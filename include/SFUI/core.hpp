@@ -13,54 +13,27 @@
 #include "ProgressBar/progress_bar.hpp"
 #include "Range/range.hpp"
 #include "Text/text.hpp"
+#include "Layout/layout.hpp"
+#include "Window/window.hpp"
 
 namespace sfui {
 	class Canvas {
-	friend class Window;
-	friend void Widget::draw(sf::RenderWindow* wnd);
-	private:
-		std::vector<Widget*> m_controls;
-		bool m_is_hidden;
+	public:
+		Layout* layout;
 
 	public:
-		Canvas(): m_is_hidden(false) {}
-		~Canvas() {}
-
-		/// <summary>
-		/// Hide or show Canvas
-		/// </summary>
-		/// <param name="flag"></param>
-		void hideCanvas(bool flag);
-
-		/// <summary>
-		/// Add new Widget to the Screen
-		/// </summary>
-		/// <param name="control"></param>
-		void add(Widget* control);
-
-		/// <summary>
-		/// Add a bunch of Widgets to the Screen
-		/// </summary>
-		/// <param name="controls"></param>
-		void add(const std::vector<Widget*> controls);
-
-		/// <summary>
-		/// Remove new Widget from the Screen
-		/// </summary>
-		/// <param name="control"></param>
-		void remove(Widget* control);
-
-		/// <summary>
-		/// Remove a bunch of Widgets from the Screen
-		/// </summary>
-		/// <param name="controls"></param>
-		void remove(const std::vector<Widget*> controls);
+		Canvas(sf::Vector2f size, sf::Vector2f position = {0, 0}, bool hide = false)
+			: layout(new DefaultLayout(size, position, hide)) {
+		}
+		~Canvas() {
+			delete layout;
+		}
 
 		/// <summary>
 		/// Display all Widgets in the SFML Window
 		/// </summary>
 		/// <param name="wnd"></param>
-		void render(sf::RenderWindow* wnd);
+		void draw(sf::RenderWindow* wnd);
 
 		/// <summary>
 		/// Handle all Events
@@ -70,4 +43,3 @@ namespace sfui {
 	};
 }
 #endif // !SFUI_CORE_HPP
-
