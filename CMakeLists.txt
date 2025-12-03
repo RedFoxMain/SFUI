@@ -11,28 +11,33 @@ set(
 	INCLUDE_FILES
 	"include/SFUI/core.hpp"
 	"include/SFUI/Button/button.hpp"
-	"include/SFUI/widget.hpp"
-	"include/SFUI/ProgressBar/progress_bar.hpp"
-	"include/SFUI/Range/range.hpp"
-	"include/SFUI/Button/button_interface.hpp"
-	"include/SFUI/TextBox/text_box.hpp"
 	"include/SFUI/Button/check_box.hpp"
 	"include/SFUI/Button/radio_button.hpp"
+	"include/SFUI/Button/button_interface.hpp"
+	"include/SFUI/Range/range.hpp"
+	"include/SFUI/widget.hpp"
+	"include/SFUI/ProgressBar/progress_bar.hpp"
+	"include/SFUI/TextBox/text_box.hpp"
 	"include/SFUI/Window/window.hpp"
 	"include/SFUI/Text/text.hpp"
+	"include/SFUI/Layout/layout.hpp"
+	"include/SFUI/Layout/layout_interface.hpp"
+	"include/SFUI/Layout/default_layout.hpp"
 )
 
 set(
 	SRC_FILES
 	"src/SFUI/core.cpp"
 	"src/SFUI/Button/button.cpp"
-	"src/SFUI/ProgressBar/progress_bar.cpp"
-	"src/SFUI/TextBox/text_box.cpp"
-	"src/SFUI/Range/range.cpp"
 	"src/SFUI/Button/check_box.cpp"
 	"src/SFUI/Button/radio_button.cpp"
+	"src/SFUI/Range/range.cpp"
+	"src/SFUI/ProgressBar/progress_bar.cpp"
+	"src/SFUI/TextBox/text_box.cpp"
 	"src/SFUI/Window/window.cpp"
 	"src/SFUI/Text/text.cpp"
+	"src/SFUI/Layout/layout_interface.cpp"
+	"src/SFUI/Layout/default_layout.cpp"
 )
 
 if(BUILD_EXAMPLE STREQUAL "ON")
