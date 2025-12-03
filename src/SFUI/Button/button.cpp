@@ -20,13 +20,13 @@ void sfui::Button::processEvents(const sf::Event& event) {
 }
 
 void sfui::Button::draw(sf::RenderWindow* wnd) {
-	sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*wnd));
-	m_is_hovered = isMouseOver(mousePos);
-	// onHover event handler
-	if (m_is_hovered && !m_is_pressed) onHover();
-	else m_rect.setFillColor(m_fill_color);
-	// onHold event handler
-	if (m_is_pressed && m_hold_timer.getElapsedTime() >= m_hold_delay) onHold();
+	if (m_is_enabled) {
+		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*wnd));
+		m_is_hovered = isMouseOver(mousePos);
+		if (m_is_hovered && !m_is_pressed) onHover();
+		else m_rect.setFillColor(m_fill_color);
+		if (m_is_pressed && m_hold_timer.getElapsedTime() >= m_hold_delay) onHold();
+	}
 	wnd->draw(m_rect);
 	if (text != nullptr) {
 		centrateText();
@@ -47,6 +47,10 @@ void sfui::Button::centrateText() {
 
 bool sfui::Button::isMouseOver(sf::Vector2f mouse_pos) {
 	return m_rect.getGlobalBounds().contains(mouse_pos);
+}
+
+void sfui::Button::setEnabled(bool flag) {
+	m_is_enabled = flag;
 }
 
 void sfui::Button::setPosition(sf::Vector2f position) {
@@ -71,11 +75,6 @@ void sfui::Button::setSizeX(float size_x) {
 
 void sfui::Button::setSizeY(float size_y) {
 	m_rect.setSize({ m_rect.getSize().x, size_y });
-}
-
-void sfui::Button::setRotation(sf::Angle angle) {
-	m_rect.setRotation(angle);
-	if(text) text->setRotation(angle);
 }
 
 void sfui::Button::setFillColor(sf::Color color) {
@@ -119,16 +118,8 @@ sf::Vector2f sfui::Button::getSize() {
 	return m_rect.getSize();
 }
 
-sf::Angle sfui::Button::getRotation() {
-	return m_rect.getRotation();
-}
-
 bool sfui::Button::isPressed() {
-	return m_is_pressed;
-}
-
-bool sfui::Button::isHovered() {
-	return m_is_hovered;
+	return m_is_pressed && m_is_hovered;
 }
 
 void sfui::Button::onHover() {

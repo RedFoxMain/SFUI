@@ -6,8 +6,7 @@
 
 namespace sfui {
 	class CheckBox: public virtual Widget, IButton {
-	friend class Canvas;
-	friend class Window;
+	friend class Layout;
 	private:
 		sf::RectangleShape m_rect;
 		sf::Color m_fill_color;
@@ -16,6 +15,7 @@ namespace sfui {
 		bool m_is_hovered;
 		bool m_is_pressed;
 		bool m_is_active;
+		bool m_is_enabled;
 		std::function<void()> m_on_pressed_callback;
 		std::function<void()> m_on_hover_callback;
 		std::function<void()> m_on_released_callback;
@@ -29,6 +29,13 @@ namespace sfui {
 			m_rect.setOutlineColor(m_outline_color);
 			m_rect.setFillColor((m_is_active) ? m_fill_color : m_outline_color);
 		}
+		~CheckBox();
+
+		/// <summary>
+		/// Set widget enabled or disabled
+		/// </summary>
+		/// <param name="flag"></param>
+		void setEnabled(bool flag);
 
 		/// <summary>
 		/// Set Button enbled or disabled
@@ -73,12 +80,6 @@ namespace sfui {
 		void setSizeY(float size_y);
 
 		/// <summary>
-		/// Set rotation in sf::Angle
-		/// </summary>
-		/// <param name="angle"></param>
-		void setRotation(sf::Angle angle);
-
-		/// <summary>
 		/// Set Button body color
 		/// </summary>
 		/// <param name="color"></param>
@@ -113,12 +114,6 @@ namespace sfui {
 		/// </summary>
 		/// <returns>sf::Vector2f</returns>
 		sf::Vector2f getSize();
-
-		/// <summary>
-		/// Return the rotation of the Button
-		/// </summary>
-		/// <returns>sf::Angle</returns>
-		sf::Angle getRotation();
 
 		/// <summary>
 		/// Check if Button is active

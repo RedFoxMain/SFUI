@@ -7,9 +7,9 @@
 
 namespace sfui {
 	class Button: virtual public Widget, IButton {
-	friend class Canvas;
 	friend class Range;
 	friend class Window;
+	friend class Layout;
 	public:
 		Text* text;
 
@@ -21,6 +21,7 @@ namespace sfui {
 		bool m_is_hovered;
 		bool m_is_pressed;
 		bool m_is_hold;
+		bool m_is_enabled;
 		std::function<void()> m_on_pressed_callback; 
 		std::function<void()> m_on_hover_callback;
 		std::function<void()> m_on_released_callback;
@@ -31,10 +32,10 @@ namespace sfui {
 	public:
 		Button(Text* text = nullptr, std::function<void()> callback = nullptr)
 			: m_texture(nullptr), m_on_pressed_callback(callback), m_on_hover_callback(nullptr), m_on_released_callback(nullptr),
-			m_is_pressed(false), m_is_hovered(false), m_is_hold(false),
-			m_fill_color(sf::Color::White), m_hover_color(sf::Color::Green), text(text) {
-			m_hold_delay = sf::seconds(0.15);
-			m_rect.setSize({ 80, 30 });
+			m_is_pressed(false), m_is_hovered(false), m_is_hold(false), m_is_enabled(true),
+			m_fill_color(sf::Color(125, 125, 125)), m_hover_color(sf::Color::Green), text(text) {
+			m_hold_delay = sf::seconds(0.15f);
+			m_rect.setSize({ 80.f, 30.f });
 			m_rect.setFillColor(m_fill_color);
 			m_rect.setOutlineThickness(1);
 			m_rect.setOutlineColor(sf::Color::Black);
@@ -44,6 +45,12 @@ namespace sfui {
 		~Button() {
 			delete text;
 		}
+
+		/// <summary>
+		/// Set widget enabled or disabled
+		/// </summary>
+		/// <param name="flag"></param>
+		void setEnabled(bool flag);
 
 		/// <summary>
 		/// Set the position by x and y
@@ -80,12 +87,6 @@ namespace sfui {
 		/// </summary>
 		/// <param name="size_y"></param>
 		void setSizeY(float size_y);
-
-		/// <summary>
-		/// Set rotation in sf::Angle
-		/// </summary>
-		/// <param name="angle"></param>
-		void setRotation(sf::Angle angle);
 
 		/// <summary>
 		/// Set Button body color
@@ -148,22 +149,10 @@ namespace sfui {
 		sf::Vector2f getSize();
 
 		/// <summary>
-		/// Return the rotation of the Button
-		/// </summary>
-		/// <returns>sf::Angle</returns>
-		sf::Angle getRotation();
-
-		/// <summary>
 		/// Check if Button is pressed
 		/// </summary>
 		/// <returns>bool</returns>
 		bool isPressed();
-
-		/// <summary>
-		/// Check if Button is hovered
-		/// </summary>
-		/// <returns>bool</returns>
-		bool isHovered();
 
 	private:
 		void draw(sf::RenderWindow* wnd) override;

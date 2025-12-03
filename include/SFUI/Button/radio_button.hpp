@@ -6,8 +6,7 @@
 
 namespace sfui {
 	class RadioButton: public Widget, IButton {
-	friend class Canvas;
-	friend class Window;
+	friend class Layout;
 	private:
 		sf::CircleShape m_circle;
 		sf::Color m_fill_color;
@@ -16,6 +15,7 @@ namespace sfui {
 		bool m_is_hovered;
 		bool m_is_pressed;
 		bool m_is_active;
+		bool m_is_enabled;
 		std::function<void()> m_on_pressed_callback;
 		std::function<void()> m_on_hover_callback;
 		std::function<void()> m_on_released_callback;
@@ -29,7 +29,14 @@ namespace sfui {
 			m_circle.setOutlineColor(m_outline_color);
 			m_circle.setFillColor((m_is_active) ? m_fill_color : m_outline_color);
 		}
+		~RadioButton();
 		
+		/// <summary>
+		/// Set widget enabled or disabled
+		/// </summary>
+		/// <param name="flag"></param>
+		void setEnabled(bool flag);
+
 		/// <summary>
 		/// Set Button enbled or disabled
 		/// </summary>
@@ -93,8 +100,8 @@ namespace sfui {
 		/// <summary>
 		/// Return the radius of the Button
 		/// </summary>
-		/// <returns>float</returns>
-		float getSize();
+		/// <returns>sf::Vector2f</returns>
+		sf::Vector2f getSize();
 
 		/// <summary>
 		/// Check if the Button is active
