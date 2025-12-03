@@ -7,12 +7,16 @@ void sfui::ProgressBar::draw(sf::RenderWindow* wnd) {
 	wnd->draw(m_foreground);
 }
 
+void sfui::ProgressBar::setEnabled(bool flag) {
+	m_is_enabled = flag;
+}
+
 void sfui::ProgressBar::updateValue(float value) {
-	m_value += value;
+	if (m_is_enabled) m_value += value;
 }
 
 void sfui::ProgressBar::setValue(float value) {
-	m_value = value;
+	if (m_is_enabled) m_value = value;
 }
 
 void sfui::ProgressBar::setMaxValue(float max) {
@@ -61,11 +65,6 @@ void sfui::ProgressBar::setSizeY(float size_y) {
 	m_background.setSize(m_foreground.getSize());
 }
 
-void sfui::ProgressBar::setRotation(sf::Angle angle) {
-	m_foreground.setRotation(angle);
-	m_background.setRotation(angle);
-}
-
 void sfui::ProgressBar::setOutlineThickness(float thickness) {
 	m_background.setOutlineThickness(thickness);
 }
@@ -80,10 +79,6 @@ sf::Vector2f sfui::ProgressBar::getPosition() {
 
 sf::Vector2f sfui::ProgressBar::getSize() {
 	return m_background.getSize();
-}
-
-sf::Angle sfui::ProgressBar::getRotation() {
-	return m_background.getRotation();
 }
 
 float sfui::ProgressBar::getValue() {

@@ -6,15 +6,18 @@
 
 namespace sfui {
 	class ProgressBar: public Widget {
+	friend class Layout;
 	private:
 		sf::RectangleShape m_background;
 		sf::RectangleShape m_foreground;
 		float m_value;
 		float m_min;
 		float m_max;
+		bool m_is_enabled;
 
 	public:
-		ProgressBar(float max = 100, float min = 0, float value = 0): m_value(value), m_min(min), m_max(max) {
+		ProgressBar(float max = 100, float min = 0, float value = 0)
+			: m_is_enabled(true), m_value(value), m_min(min), m_max(max) {
 			m_background.setSize({ 300, 20 });
 			m_background.setOutlineThickness(1);
 			m_background.setOutlineColor(sf::Color::Black);
@@ -22,8 +25,13 @@ namespace sfui {
 			m_foreground.setPosition(m_background.getPosition());
 			m_foreground.setFillColor(sf::Color(128, 128, 128));
 		}
-
 		~ProgressBar() {}
+
+		/// <summary>
+		/// Enable or disable progress bar
+		/// </summary>
+		/// <param name="flag"></param>
+		void setEnabled(bool flag);
 
 		/// <summary>
 		/// Update the progress bar value (progress_bar_value += value)
@@ -98,12 +106,6 @@ namespace sfui {
 		void setSizeY(float size_y);
 
 		/// <summary>
-		/// Set rotation to the Progress bar
-		/// </summary>
-		/// <param name="angle"></param>
-		void setRotation(sf::Angle);
-
-		/// <summary>
 		/// Set border size to the Progress bar
 		/// </summary>
 		/// <param name="thickness"></param>
@@ -125,13 +127,7 @@ namespace sfui {
 		/// Return the size of the Progress bar
 		/// </summary>
 		/// <returns>sf::Vector2f</returns>
-		sf::Vector2f getSize();
-
-		/// <summary>
-		/// Return the rotation of the Progress bar in sf::Angle
-		/// </summary>
-		/// <returns>sf::Angle</returns>
-		sf::Angle getRotation();
+		sf::Vector2f getSize() override;
 
 		/// <summary>
 		/// Return the the Progress bar value
