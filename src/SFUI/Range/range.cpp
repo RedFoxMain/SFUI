@@ -3,7 +3,8 @@
 void sfui::Range::processEvents(const sf::Event& event) {
 	slider->processEvents(event);
 	if (const auto* mouse_pressed = event.getIf<sf::Event::MouseButtonPressed>()) {
-		if (slider->isPressed()) slider_moved_offset_.x = mouse_pressed->position.x - slider->getPosition().x;
+		if (slider->isPressed())
+			slider_moved_offset_.x = mouse_pressed->position.x - slider->getPosition().x;
 	}
 	if (const auto* mouse_pos = event.getIf<sf::Event::MouseMoved>()) {
 		if (slider->isPressed()) {
@@ -64,11 +65,6 @@ void sfui::Range::setSizeX(float size_x) {
 void sfui::Range::setSizeY(float size_y) {
 	m_background.setSize({ m_background.getSize().x, size_y });
 	slider->setSize({ m_background.getSize().y, m_background.getSize().y });
-}
-
-void sfui::Range::setRotation(sf::Angle degrees) {
-	m_background.setRotation(degrees);
-	slider->setRotation(degrees);
 }
 
 void sfui::Range::setOutlineThickness(float thickness) {

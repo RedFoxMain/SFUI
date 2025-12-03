@@ -6,7 +6,7 @@
 
 namespace sfui {
 	class Range: public Widget {
-	friend class Canvas;
+	friend class Layout;
 	public:
 		Button* slider;
 
@@ -19,15 +19,16 @@ namespace sfui {
 		float m_value;
 
 	public:
-		Range(float max = 100, float min = 0): m_min(min), m_max(max), m_value(0) {
+		Range(float max = 100, float min = 0)
+			: m_min(min), m_max(max), m_value(0) {
 			m_background.setSize({ 300, 20 });
 			m_background.setOutlineThickness(1);
 			m_background.setOutlineColor(sf::Color::Black);
 
 			slider = new sfui::Button();
 			slider->setFillColor(sf::Color::Black);
-			slider->setSize({ m_background.getSize().y, m_background.getSize().y });
 			slider->setPosition(m_background.getPosition());
+			slider->setSize({ m_background.getSize().y, m_background.getSize().y });
 		}
 		~Range() {
 			delete slider;
@@ -86,12 +87,6 @@ namespace sfui {
 		/// </summary>
 		/// <param name="size_y"></param>
 		void setSizeY(float size_y);
-
-		/// <summary>
-		/// Set rotation in sf::Angle
-		/// </summary>
-		/// <param name="angle"></param>
-		void setRotation(sf::Angle degrees);
 
 		/// <summary>
 		/// Set border size
