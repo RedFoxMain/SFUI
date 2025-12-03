@@ -2,7 +2,6 @@
 #include "SFUI/core.hpp"
 #include "SFUI/Window/window.hpp"
 
-// TODO: дндекюи TextBox
 int main() {
 	sf::RenderWindow* main_wnd = new sf::RenderWindow(sf::VideoMode({ 800, 500 }), "SFUI test");
 	sf::Font font("ArialRegular.ttf"); // Create Font
