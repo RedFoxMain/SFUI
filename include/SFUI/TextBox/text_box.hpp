@@ -4,42 +4,65 @@
 #include "SFML/Graphics.hpp"
 #include "../widget.hpp"
 #include "../Text/text.hpp"
-
-#define BAKSPACE_KEY 8
+#define BAKSPACE_KEY 0x8
 
 namespace sfui {
-	class TextBox: public Widget {
-	friend class Canvas;
-	public:
-		Text* place_holder;
-		Text* text;
-
+	class TextBox: public virtual Widget {
+	friend class Layout;
 	private:
+		Text* m_place_holder;
+		Text* m_text;
 		sf::RectangleShape m_rect;
 		sf::Font m_font;
 		std::string input_string_;
 		bool draw_place_holder_;
-		bool is_active_ = false;
+		bool is_active_;
+		bool m_is_enabled;
+		float glyph_size_;
 
 	public:
 		TextBox(Text* place_holder): 
-			place_holder(place_holder), draw_place_holder_(true) {
-			place_holder->setFillColor(sf::Color(128, 128, 128));
-			place_holder->setPosition(m_rect.getPosition());
+			m_place_holder(place_holder), draw_place_holder_(true), is_active_(false), m_is_enabled(true) {
+			m_place_holder->setFillColor(sf::Color(128, 128, 128));
+			m_place_holder->setPosition(m_rect.getPosition());
+			m_font = m_place_holder->getFont();
+			glyph_size_ = m_font.getGlyph('A', m_place_holder->getCharacterSize(), false).advance;
 
-			m_font = place_holder->getFont();
+			m_text = new Text(m_font);
+			m_text->setFillColor(sf::Color::Black);
+			m_text->setPosition(m_place_holder->getPosition());
+			m_text->setCharacterSize(m_place_holder->getCharacterSize());
 
-			text = new Text(m_font);
-			text->setFillColor(sf::Color::Black);
-			text->setPosition(place_holder->getPosition());
-			text->setCharacterSize(place_holder->getCharacterSize());
-
-			m_rect.setSize(sf::Vector2f(300, place_holder->getCharacterSize()));
+			m_rect.setSize(sf::Vector2f(300.f, static_cast<float>(m_place_holder->getCharacterSize())));
 			m_rect.setFillColor(sf::Color::White);
 			m_rect.setOutlineThickness(1);
 			m_rect.setOutlineColor(sf::Color::Black);
 			centrateText();
 		}
+
+		/// <summary>
+		/// Set widget enabled or disabled
+		/// </summary>
+		/// <param name="flag"></param>
+		void setEnabled(bool flag);
+
+		/// <summary>
+		/// Set the color for text
+		/// </summary>
+		/// <param name="color"></param>
+		void setTextColor(sf::Color color);
+
+		/// <summary>
+		/// Set placeholder text
+		/// </summary>
+		/// <param name="text"></param>
+		void setPlaceHolderText(const std::string& text);
+
+		/// <summary>
+		/// Set text to the TextBox
+		/// </summary>
+		/// <param name="text"></param>
+		void setText(const std::string& text);
 
 		/// <summary>
 		/// Set the position by x and y
@@ -95,7 +118,6 @@ namespace sfui {
 		/// <param name="color"></param>
 		void setOutlineColor(sf::Color color);
 
-
 		/// <summary>
 		/// Return the position
 		/// </summary>
@@ -109,10 +131,10 @@ namespace sfui {
 		sf::Vector2f getSize();
 
 		/// <summary>
-		/// Return the rotation
+		/// Get entered text
 		/// </summary>
-		/// <returns>sf::Angle</returns>
-		sf::Angle getRotation(); 
+		/// <returns></returns>
+		std::string getText();
 		
 	private:
 		void draw(sf::RenderWindow* wnd) override;
