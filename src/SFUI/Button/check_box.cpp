@@ -11,12 +11,18 @@ void sfui::CheckBox::processEvents(const sf::Event& event) {
 }
 
 void sfui::CheckBox::draw(sf::RenderWindow* wnd) {
-	sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*wnd));
-	m_is_hovered = isMouseOver(mousePos);
-	if (m_is_hovered && m_is_pressed) onPressed();
-	if (m_is_hovered && !m_is_pressed) onHover();
+	if (m_is_enabled) {
+		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*wnd));
+		m_is_hovered = isMouseOver(mousePos);
+		if (m_is_hovered && m_is_pressed) onPressed();
+		if (m_is_hovered && !m_is_pressed) onHover();
+	}
 	m_rect.setFillColor((m_is_active) ? m_fill_color : m_outline_color);
 	wnd->draw(m_rect);
+}
+
+void sfui::CheckBox::setEnabled(bool flag) {
+	m_is_enabled = flag;
 }
 
 void sfui::CheckBox::setStatus(bool flag) {
@@ -47,10 +53,6 @@ void sfui::CheckBox::setSizeY(float size_y) {
 	m_rect.setPosition({ m_rect.getPosition().x, size_y });
 }
 
-void sfui::CheckBox::setRotation(sf::Angle angle) {
-	m_rect.setRotation(angle);
-}
-
 void sfui::CheckBox::setFillColor(sf::Color color) {
 	m_rect.setFillColor(m_fill_color = color);
 }
@@ -73,10 +75,6 @@ sf::Vector2f sfui::CheckBox::getPosition() {
 
 sf::Vector2f sfui::CheckBox::getSize() {
 	return m_rect.getSize();
-}
-
-sf::Angle sfui::CheckBox::getRotation() {
-	return m_rect.getRotation();
 }
 
 bool sfui::CheckBox::isActive() {

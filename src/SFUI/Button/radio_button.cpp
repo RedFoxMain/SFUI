@@ -11,12 +11,18 @@ void sfui::RadioButton::processEvents(const sf::Event& event) {
 }
 
 void sfui::RadioButton::draw(sf::RenderWindow* wnd) {
-	sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*wnd));
-	m_is_hovered = isMouseOver(mousePos);
-	if (m_is_hovered && m_is_pressed) onPressed();
-	if (m_is_hovered && !m_is_pressed) onHover();
+	if (m_is_enabled) {
+		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*wnd));
+		m_is_hovered = isMouseOver(mousePos);
+		if (m_is_hovered && m_is_pressed) onPressed();
+		if (m_is_hovered && !m_is_pressed) onHover();
+	}
 	m_circle.setFillColor((m_is_active) ? m_fill_color : m_outline_color);
 	wnd->draw(m_circle);
+}
+
+void sfui::RadioButton::setEnabled(bool flag) {
+	m_is_enabled = flag;
 }
 
 void sfui::RadioButton::setStatus(bool flag) {
@@ -59,8 +65,8 @@ sf::Vector2f sfui::RadioButton::getPosition() {
 	return m_circle.getPosition();
 }
 
-float sfui::RadioButton::getSize() {
-	return m_circle.getRadius();
+sf::Vector2f sfui::RadioButton::getSize() {
+	return sf::Vector2f(m_circle.getRadius() * 2, m_circle.getRadius() * 2);
 }
 
 bool sfui::RadioButton::isActive() {
