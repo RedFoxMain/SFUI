@@ -5,7 +5,7 @@
 
 namespace sfui {
 	class Text: public Widget {
-	friend class Canvas;
+	friend class Layout;
 	friend class Window;
 	friend class Button;
 	friend class TextBox;
@@ -13,8 +13,9 @@ namespace sfui {
 		sf::Text* m_text;
 
 	public:
-		Text(sf::Font& font, const std::string& text = "", unsigned int size = 32) {
-			m_text = new sf::Text(font, text, size);
+		Text(sf::Font& font, const std::string& text = "", unsigned int size = 32)
+			: m_text(new sf::Text(font, text, size)) {
+			m_text->setFillColor(sf::Color::Black);
 		}
 		~Text() {
 			delete m_text;
@@ -23,9 +24,8 @@ namespace sfui {
 		void setPosition(sf::Vector2f position) override;
 		void setPositionX(float position_x);
 		void setPositionY(float position_y);
-		void setRotation(sf::Angle angle);
 		void setFont(const sf::Font& font);
-		void setString(const sf::String& string);
+		void setText(const sf::String& string);
 		void setCharacterSize(unsigned int size);
 		void setLineSpacing(float spacing_factor);
 		void setLetterSpacing(float spacing_factor);
@@ -35,8 +35,8 @@ namespace sfui {
 		void setOutlineThickness(float thickness);
 
 		sf::Vector2f getPosition() override;
-		sf::Angle getRotation();
-		sf::String getString();
+		sf::Vector2f getSize() override;
+		sf::String getText();
 		sf::Vector2f getOrigin();
 		sf::Font getFont();
 		unsigned int getCharacterSize();

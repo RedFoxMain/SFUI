@@ -4,10 +4,6 @@ void sfui::Text::draw(sf::RenderWindow* wnd) {
 	wnd->draw(*m_text);
 }
 
-void sfui::Text::setOrigin(sf::Vector2f origin) {
-	m_text->setOrigin(origin);
-}
-
 void sfui::Text::setPosition(sf::Vector2f position) {
 	m_text->setPosition(position);
 }
@@ -20,15 +16,23 @@ void sfui::Text::setPositionY(float position_y) {
 	m_text->setPosition({ m_text->getPosition().x, position_y });
 }
 
-void sfui::Text::setRotation(sf::Angle angle) {
-	m_text->setRotation(angle);
+sf::Vector2f sfui::Text::getPosition() {
+	return m_text->getPosition();
+}
+
+sf::Vector2f sfui::Text::getSize() {
+	return m_text->getLocalBounds().size;
+}
+
+void sfui::Text::setOrigin(sf::Vector2f origin) {
+	m_text->setOrigin(origin);
 }
 
 void sfui::Text::setFont(const sf::Font& font) {
 	m_text->setFont(font);
 }
 
-void sfui::Text::setString(const sf::String& string) {
+void sfui::Text::setText(const sf::String& string) {
 	m_text->setString(string);
 }
 
@@ -60,15 +64,7 @@ void sfui::Text::setOutlineThickness(float thickness) {
 	m_text->setOutlineThickness(thickness);
 }
 
-sf::Vector2f sfui::Text::getPosition() {
-	return m_text->getPosition();
-}
-
-sf::Angle sfui::Text::getRotation() {
-	return m_text->getRotation();
-}
-
-sf::String sfui::Text::getString() {
+sf::String sfui::Text::getText() {
 	return m_text->getString();
 }
 
