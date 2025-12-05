@@ -4,6 +4,9 @@ Current version: 1.0.2
 # What will be in the future?
 - [ ] Text scrolling and copying in TextBox
 - [ ] Adding textures to the Widgets
+  - [ ] Button
+  - [ ] Range
+  - [ ] ProgressBar
 - [ ] More Widgets
 - [ ] Layouts
   - [X] DefaultLayout 
