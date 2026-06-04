@@ -1,0 +1,6 @@
+#ifndef SFUI_CONFIG_H
+#define SFUI_CONFIG_H
+
+#define DEFAULT_FONT "@DEFAULT_FONT@"
+
+#endif
