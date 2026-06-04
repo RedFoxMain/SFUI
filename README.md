@@ -9,7 +9,6 @@ Current version: 1.0.2
   - [ ] ProgressBar
 - [ ] More Widgets
 - [ ] Layouts
-  - [X] DefaultLayout 
   - [ ] Horizontal layout
   - [ ] Vertiacl layout
   - [ ] Grid layout
