@@ -5,128 +5,54 @@
 #include "../Button/button.hpp"
 
 namespace sfui {
-	class Range: public Widget {
-	friend class Layout;
-	public:
-		Button* slider;
-
+	class Range: public Widget, public Processable, public Updatable {
 	private:
+		std::unique_ptr<Button> m_slider;
 		sf::Vector2f slider_base_offset_;
 		sf::Vector2f slider_moved_offset_;
 		sf::RectangleShape m_background;
 		float m_min;
 		float m_max;
 		float m_value;
+		bool m_is_enabled;
+		bool m_is_hidden;
 
 	public:
 		Range(float max = 100, float min = 0)
-			: m_min(min), m_max(max), m_value(0) {
+			: m_min(min), m_max(max), m_value(0), m_is_enabled(true), m_is_hidden(false) {
 			m_background.setSize({ 300, 20 });
 			m_background.setOutlineThickness(1);
 			m_background.setOutlineColor(sf::Color::Black);
 
-			slider = new sfui::Button();
-			slider->setFillColor(sf::Color::Black);
-			slider->setPosition(m_background.getPosition());
-			slider->setSize({ m_background.getSize().y, m_background.getSize().y });
+			m_slider = std::unique_ptr<Button>(new sfui::Button());
+			m_slider->setFillColor(sf::Color::Black);
+			m_slider->setHoverColor(sf::Color::Black);
+			m_slider->setPosition(m_background.getPosition());
+			m_slider->setSize({ m_background.getSize().y, m_background.getSize().y });
 		}
-		~Range() {
-			delete slider;
-		}
+		~Range() override {}
 
-		/// <summary>
-		/// Set max value
-		/// </summary>
-		/// <param name="max"></param>
+		void setEnabled(bool enabled);
+		void hide(bool hidden) override;
 		void setMaxValue(float max);
-
-		/// <summary>
-		/// Set min value
-		/// </summary>
-		/// <param name="min"></param>
 		void setMinValue(float min);
-
-		/// <summary>
-		/// Set background color
-		/// </summary>
-		/// <param name="color"></param>
 		void setBackgroundColor(sf::Color color);
-
-		/// <summary>
-		/// Set position by x and y
-		/// </summary>
-		/// <param name="position"></param>
 		void setPosition(sf::Vector2f position) override;
-
-		/// <summary>
-		/// Set position by x
-		/// </summary>
-		/// <param name="position_x"></param>
 		void setPositionX(float position_x);
-
-		/// <summary>
-		/// Set position by y
-		/// </summary>
-		/// <param name="position_y"></param>
 		void setPositionY(float position_y);
-
-		/// <summary>
-		/// Set size by x and y
-		/// </summary>
-		/// <param name="size"></param>
 		void setSize(sf::Vector2f size);
-
-		/// <summary>
-		/// Set size by x
-		/// </summary>
-		/// <param name="size_x"></param>
 		void setSizeX(float size_x);
-
-		/// <summary>
-		/// Set size by y
-		/// </summary>
-		/// <param name="size_y"></param>
 		void setSizeY(float size_y);
-
-		/// <summary>
-		/// Set border size
-		/// </summary>
-		/// <param name="thickness"></param>
 		void setOutlineThickness(float thickness);
-
-		/// <summary>
-		/// Set border color
-		/// </summary>
-		/// <param name="color"></param>
 		void setOutlineColor(sf::Color color);
-
-		/// <summary>
-		/// Return the position of the Range
-		/// </summary>
-		/// <returns>sf::Vector2f</returns>
 		sf::Vector2f getPosition() override;
-
-		/// <summary>
-		/// Return the size of the Range
-		/// </summary>
-		/// <returns>sf::Vector2f</returns>
-		sf::Vector2f getSize();
-
-		/// <summary>
-		/// Return the angle of the Range
-		/// </summary>
-		/// <returns>sf::Angle</returns>
-		sf::Angle getRotation();
-
-		/// <summary>
-		/// Return current value of the Range
-		/// </summary>
-		/// <returns>float</returns>
+		sf::Vector2f getSize() override;
 		float getValue();
 
 	private:
-		void draw(sf::RenderWindow* wnd) override;
-		void processEvents(const sf::Event& event);
+		void processEvents(const sf::Event& event) override;
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+		void update(const sf::RenderWindow& window) override;
 	};
 }
 #endif // !SFUI_RANGE_HPP

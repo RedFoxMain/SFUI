@@ -1,12 +1,11 @@
 #ifndef SFUI_CHECK_BOX_HPP
 #define SFUI_CHECK_BOX_HPP
 
-#include "button_interface.hpp"
 #include "../widget.hpp"
+#include "button_interface.hpp"
 
 namespace sfui {
-	class CheckBox: public virtual Widget, IButton {
-	friend class Layout;
+	class CheckBox: public Widget, public Processable, public Updatable, ButtonBase {
 	private:
 		sf::RectangleShape m_rect;
 		sf::Color m_fill_color;
@@ -16,122 +15,44 @@ namespace sfui {
 		bool m_is_pressed;
 		bool m_is_active;
 		bool m_is_enabled;
+		bool m_is_hidden;
 		std::function<void()> m_on_pressed_callback;
 		std::function<void()> m_on_hover_callback;
 		std::function<void()> m_on_released_callback;
 
 	public:
-		CheckBox(bool active = false, std::function<void()> on_pressed_callback = nullptr): m_is_active(active), m_is_pressed(false), m_is_hovered(false),
-			m_on_pressed_callback(on_pressed_callback), m_on_hover_callback(nullptr), m_on_released_callback(nullptr),
+		CheckBox(bool active = false, std::function<void()> on_pressed_callback = nullptr)
+			: m_is_active(active), m_is_pressed(false), m_is_hovered(false), m_is_enabled(true), m_is_hidden(false),
+			m_on_pressed_callback(on_pressed_callback), m_on_hover_callback(nullptr), m_on_released_callback(nullptr), 
 			m_fill_color(sf::Color::White), m_outline_color(sf::Color::Black) {
 			m_rect.setSize({ 15, 15 });
 			m_rect.setOutlineThickness(5);
 			m_rect.setOutlineColor(m_outline_color);
 			m_rect.setFillColor((m_is_active) ? m_fill_color : m_outline_color);
 		}
-		~CheckBox();
+		~CheckBox() override {}
 
-		/// <summary>
-		/// Set widget enabled or disabled
-		/// </summary>
-		/// <param name="flag"></param>
-		void setEnabled(bool flag);
-
-		/// <summary>
-		/// Set Button enbled or disabled
-		/// </summary>
-		/// <param name="flag"></param>
+		void setEnabled(bool enabled);
+		void hide(bool hidden) override;
 		void setStatus(bool flag);
-
-		/// <summary>
-		/// Set position by x and y
-		/// </summary>
-		/// <param name="position"></param>
 		void setPosition(sf::Vector2f position) override;
-
-		/// <summary>
-		/// Set position by x
-		/// </summary>
-		/// <param name="position_x"></param>
 		void setPositionX(float position_x);
-
-		/// <summary>
-		/// Set position by y
-		/// </summary>
-		/// <param name="position_y"></param>
 		void setPositionY(float position_y);
-
-		/// <summary>
-		/// Set size by x and y
-		/// </summary>
-		/// <param name="size"></param>
 		void setSize(sf::Vector2f size);
-
-		/// <summary>
-		/// Set position by x
-		/// </summary>
-		/// <param name="size_x"></param>
 		void setSizeX(float size_x);
-
-		/// <summary>
-		/// Set size by y
-		/// </summary>
-		/// <param name="size_y"></param>
 		void setSizeY(float size_y);
-
-		/// <summary>
-		/// Set Button body color
-		/// </summary>
-		/// <param name="color"></param>
 		void setFillColor(sf::Color color);
-
-		/// <summary>
-		/// Set on pressed callback
-		/// </summary>
-		/// <param name="on_pressed_callback"></param>
-		void setOnPressedCallback(std::function<void()> on_pressed_callback) override;
-
-		/// <summary>
-		/// Set on hover callback
-		/// </summary>
-		/// <param name="on_hover_callback"></param>
-		void setOnHoverCallback(std::function<void()> on_hover_callback) override;
-
-		/// <summary>
-		/// Set on released callback
-		/// </summary>
-		/// <param name="on_released_callback"></param>
-		void setOnReleasedCallback(std::function<void()> on_released_callback) override;
-
-		/// <summary>
-		/// Return the position of the Button
-		/// </summary>
-		/// <returns>sf::Vector2f</returns>
+		void setOnPressedCallback(std::function<void()> callback) override;
+		void setOnHoverCallback(std::function<void()> callback) override;
+		void setOnReleasedCallback(std::function<void()> callback) override;
 		sf::Vector2f getPosition() override;
-
-		/// <summary>
-		/// Return the size of the Button
-		/// </summary>
-		/// <returns>sf::Vector2f</returns>
 		sf::Vector2f getSize();
-
-		/// <summary>
-		/// Check if Button is active
-		/// </summary>
-		/// <returns>bool</returns>
 		bool isActive();
 
 	private:
 		void processEvents(const sf::Event& event) override;
-		void draw(sf::RenderWindow* wnd) override;
-
-		// Events
-		void onHover();
-		void onPressed();
-		void onReleased();
-
-		// Utils
-		bool isMouseOver(sf::Vector2f mouse_pos);
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+		void update(const sf::RenderWindow& window) override;
 	};
 }
 #endif // !SFUI_CHECK_BOX_HPP

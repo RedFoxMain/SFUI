@@ -2,44 +2,29 @@
 #define SFUI_CORE_HPP
 
 #include <vector>
-#include <algorithm>
-
 #include "widget.hpp"
 
-#include "Button/button.hpp"
-#include "Button/check_box.hpp"
-#include "Button/radio_button.hpp"
-#include "TextBox/text_box.hpp"
-#include "ProgressBar/progress_bar.hpp"
-#include "Range/range.hpp"
-#include "Text/text.hpp"
-#include "Layout/layout.hpp"
-#include "Window/window.hpp"
-
 namespace sfui {
-	class Canvas {
-	public:
-		Layout* layout;
+	class Canvas: public Container, public Updatable, public Processable {
+	private:
+		std::vector<std::shared_ptr<Widget>> m_controls;
+		bool m_is_hidden;
 
 	public:
-		Canvas(sf::Vector2f size, sf::Vector2f position = {0, 0}, bool hide = false)
-			: layout(new DefaultLayout(size, position, hide)) {
-		}
-		~Canvas() {
-			delete layout;
-		}
+		Canvas(sf::Vector2f size): m_is_hidden(false) {}
+		~Canvas() { m_controls.clear(); }
+		void hide(bool hidden);
 
-		/// <summary>
-		/// Display all Widgets in the SFML Window
-		/// </summary>
-		/// <param name="wnd"></param>
-		void draw(sf::RenderWindow* wnd);
+		void addChild(std::shared_ptr<Widget> widget) override;
+		void addChild(std::vector<std::shared_ptr<Widget>> widgets) override;
+		void removeChild(std::shared_ptr<Widget> widget) override;
+		void removeChild(std::vector<std::shared_ptr<Widget>> widgets) override;
 
-		/// <summary>
-		/// Handle all Events
-		/// </summary>
-		/// <param name="event"></param>
-		void processEvents(const sf::Event& event);
+		void processEvents(const sf::Event& event) override;
+		void update(const sf::RenderWindow& window) override;
+
+	private:
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	};
 }
 #endif // !SFUI_CORE_HPP
